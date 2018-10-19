@@ -1,6 +1,10 @@
 package com.shortn0tes.feignexample.model;
 
-public class ExmoObject {
+import com.fasterxml.jackson.annotation.JsonSetter;
+import lombok.Data;
+
+
+public class ETH_BTC {
 
     private String ask_quantity;
 
@@ -18,13 +22,14 @@ public class ExmoObject {
 
     private String ask_amount;
 
-    public ExmoObject() {
+    public ETH_BTC() {
     }
 
     public String getAsk_quantity() {
         return ask_quantity;
     }
 
+    @JsonSetter("ask_quantity")
     public void setAsk_quantity(String ask_quantity) {
         this.ask_quantity = ask_quantity;
     }
@@ -33,6 +38,8 @@ public class ExmoObject {
         return bid_quantity;
     }
 
+
+    @JsonSetter("bid_quantity")
     public void setBid_quantity(String bid_quantity) {
         this.bid_quantity = bid_quantity;
     }
@@ -41,6 +48,7 @@ public class ExmoObject {
         return ask;
     }
 
+    @JsonSetter("ask")
     public void setAsk(String[][] ask) {
         this.ask = ask;
     }
@@ -49,6 +57,7 @@ public class ExmoObject {
         return bid_top;
     }
 
+    @JsonSetter("bid_top")
     public void setBid_top(String bid_top) {
         this.bid_top = bid_top;
     }
@@ -57,6 +66,7 @@ public class ExmoObject {
         return bid;
     }
 
+    @JsonSetter("bid")
     public void setBid(String[][] bid) {
         this.bid = bid;
     }
@@ -65,6 +75,7 @@ public class ExmoObject {
         return bid_amount;
     }
 
+    @JsonSetter("bid_amount")
     public void setBid_amount(String bid_amount) {
         this.bid_amount = bid_amount;
     }
@@ -73,6 +84,7 @@ public class ExmoObject {
         return ask_top;
     }
 
+    @JsonSetter("ask_top")
     public void setAsk_top(String ask_top) {
         this.ask_top = ask_top;
     }
@@ -81,6 +93,7 @@ public class ExmoObject {
         return ask_amount;
     }
 
+    @JsonSetter("ask_amount")
     public void setAsk_amount(String ask_amount) {
         this.ask_amount = ask_amount;
     }
