@@ -24,6 +24,10 @@ public class ExampleController {
     String read() {
         ExampleObject exampleObject = exampleObjectClient.getExampleObject();
         String str = exampleObject.getEth_btc().getAsk_amount();
+
+
+
+
         return "This is " + str;
     }
 }
