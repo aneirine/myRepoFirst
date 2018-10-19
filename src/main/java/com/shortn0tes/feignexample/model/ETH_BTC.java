@@ -1,8 +1,5 @@
 package com.shortn0tes.feignexample.model;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-import lombok.Data;
-
 
 public class ETH_BTC {
 
@@ -29,7 +26,7 @@ public class ETH_BTC {
         return ask_quantity;
     }
 
-    @JsonSetter("ask_quantity")
+
     public void setAsk_quantity(String ask_quantity) {
         this.ask_quantity = ask_quantity;
     }
@@ -39,7 +36,7 @@ public class ETH_BTC {
     }
 
 
-    @JsonSetter("bid_quantity")
+
     public void setBid_quantity(String bid_quantity) {
         this.bid_quantity = bid_quantity;
     }
@@ -48,7 +45,7 @@ public class ETH_BTC {
         return ask;
     }
 
-    @JsonSetter("ask")
+
     public void setAsk(String[][] ask) {
         this.ask = ask;
     }
@@ -57,7 +54,7 @@ public class ETH_BTC {
         return bid_top;
     }
 
-    @JsonSetter("bid_top")
+
     public void setBid_top(String bid_top) {
         this.bid_top = bid_top;
     }
@@ -66,7 +63,7 @@ public class ETH_BTC {
         return bid;
     }
 
-    @JsonSetter("bid")
+
     public void setBid(String[][] bid) {
         this.bid = bid;
     }
@@ -75,7 +72,7 @@ public class ETH_BTC {
         return bid_amount;
     }
 
-    @JsonSetter("bid_amount")
+
     public void setBid_amount(String bid_amount) {
         this.bid_amount = bid_amount;
     }
@@ -84,7 +81,6 @@ public class ETH_BTC {
         return ask_top;
     }
 
-    @JsonSetter("ask_top")
     public void setAsk_top(String ask_top) {
         this.ask_top = ask_top;
     }
@@ -93,7 +89,7 @@ public class ETH_BTC {
         return ask_amount;
     }
 
-    @JsonSetter("ask_amount")
+
     public void setAsk_amount(String ask_amount) {
         this.ask_amount = ask_amount;
     }
