@@ -1,9 +1,10 @@
 package com.shortn0tes.feignexample.repos;
 
-import org.aspectj.bridge.Message;
+import com.shortn0tes.feignexample.model.Price;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PriceRepo extends CrudRepository<Message, Long> {
-
+@Repository
+public interface PriceRepo extends CrudRepository<Price, Long> {
 
 }
