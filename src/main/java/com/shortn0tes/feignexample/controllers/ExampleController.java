@@ -2,15 +2,14 @@ package com.shortn0tes.feignexample.controllers;
 
 import com.shortn0tes.feignexample.feign.ExampleObjectClient;
 import com.shortn0tes.feignexample.model.ExampleObject;
-import feign.Feign;
-import feign.Logger;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
+import com.shortn0tes.feignexample.model.Price;
+import com.shortn0tes.feignexample.repos.PriceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.feign.support.SpringMvcContract;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 
 
 @Controller
@@ -22,8 +21,8 @@ public class ExampleController {
     @RequestMapping("/read")
     @ResponseBody
     String read() {
-        ExampleObject exampleObject = exampleObjectClient.getExampleObject();
-        String str = exampleObject.getEth_btc().getAsk_amount();
+        ExampleObject exampleObject = exampleObjectClient.getExampleObject("ETH_BTC");
+        String str = exampleObject.getBook().getAsk_amount();
 
 
 
@@ -31,6 +30,7 @@ public class ExampleController {
         return "This is " + str;
     }
 }
+
 
 
 

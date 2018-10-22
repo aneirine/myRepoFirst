@@ -3,7 +3,7 @@ package com.shortn0tes.feignexample.model;
 import lombok.Data;
 
 @Data
-public class ETH_BTC {
+public class Book {
 
     private String ask_quantity;
     private String bid_quantity;
@@ -14,8 +14,6 @@ public class ETH_BTC {
     private String ask_top;
     private String ask_amount;
 
-    public ETH_BTC() {
+    public Book() {
     }
-
-
 }
