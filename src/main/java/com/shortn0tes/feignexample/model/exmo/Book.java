@@ -1,4 +1,4 @@
-package com.shortn0tes.feignexample.model;
+package com.shortn0tes.feignexample.model.exmo;
 
 import lombok.Data;
 

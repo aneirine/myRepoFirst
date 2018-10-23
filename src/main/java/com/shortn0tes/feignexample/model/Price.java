@@ -8,20 +8,23 @@ import java.util.Date;
 
 @Entity
 public class Price {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private String exchange;
-    private double value;
-    private Date date;
-    
-    public Price (){}
 
-    public Price(String exchange, double value, Date date) {
+    private String exchange;
+    private double valueAsk;
+    private double valueBid;
+    private Date date;
+
+    public Price() {
+    }
+
+    public Price(String exchange, double valueAsk, double valueBid, Date date) {
         this.exchange = exchange;
-        this.value = value;
+        this.valueAsk = valueAsk;
+        this.valueBid = valueBid;
         this.date = date;
     }
 
@@ -41,12 +44,20 @@ public class Price {
         this.exchange = exchange;
     }
 
-    public double getValue() {
-        return value;
+    public double getValueAsk() {
+        return valueAsk;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setValueAsk(double valueAsk) {
+        this.valueAsk = valueAsk;
+    }
+
+    public double getValueBid() {
+        return valueBid;
+    }
+
+    public void setValueBid(double valueBid) {
+        this.valueBid = valueBid;
     }
 
     public Date getDate() {
@@ -56,4 +67,5 @@ public class Price {
     public void setDate(Date date) {
         this.date = date;
     }
+
 }
