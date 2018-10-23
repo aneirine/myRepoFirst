@@ -1,11 +1,15 @@
-package com.shortn0tes.feignexample.model;
+package com.shortn0tes.feignexample.model.exmo;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class ExampleObject {
+public class ExmoObject {
     private Book book;
 
-    public ExampleObject() {
+    public ExmoObject(Book book) {
+        this.book = book;
+    }
+
+    public ExmoObject() {
     }
 
     public Book getBook() {
