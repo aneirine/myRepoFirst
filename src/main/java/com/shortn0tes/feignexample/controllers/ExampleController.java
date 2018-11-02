@@ -6,6 +6,7 @@ import com.shortn0tes.feignexample.feign.HitBtcTradeClient;
 import com.shortn0tes.feignexample.feign.HitbtcObjectClient;
 import com.shortn0tes.feignexample.model.Price;
 import com.shortn0tes.feignexample.model.Profit;
+import com.shortn0tes.feignexample.model.Trade;
 import com.shortn0tes.feignexample.model.bitfenix.AsksBF;
 import com.shortn0tes.feignexample.model.bitfenix.BidsBF;
 import com.shortn0tes.feignexample.model.bitfenix.BitfenixObject;
@@ -15,6 +16,7 @@ import com.shortn0tes.feignexample.model.hitbtc.BidH;
 import com.shortn0tes.feignexample.model.hitbtc.HitbtcObject;
 import com.shortn0tes.feignexample.repos.PriceRepo;
 import com.shortn0tes.feignexample.repos.ProfitRepo;
+import com.shortn0tes.feignexample.repos.TradeRepo;
 import com.shortn0tes.feignexample.trades.HitBtcTrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,19 +38,10 @@ public class ExampleController {
     ExmoObjectClient exampleObjectClient;
 
     @Autowired
-    BitfenixObjectClient bitfenixObjectClient;
-
-    @Autowired
-    HitbtcObjectClient hitbtcObjectClient;
-
-    @Autowired
-    PriceRepo priceRepo;
-
-    @Autowired
-    ProfitRepo profitRepo;
-
-    @Autowired
     HitBtcTradeClient hitBtcTradeClient;
+
+    @Autowired
+    TradeRepo tradeRepo;
 
 
     @Scheduled(fixedRate = 10000)
@@ -74,7 +67,7 @@ public class ExampleController {
 
                 String[][] ask = exmoObject.getBook().getAsk();
 
-                double counted = 0, thisQuantity = 0, priceSecond;
+                double counted = 0, thisQuantity = 0, priceSecond = 0;
 
                 for (int i = 0; i < ask.length; i++) {
                     double quantityExmo = Double.valueOf(ask[i][1]);
@@ -97,9 +90,11 @@ public class ExampleController {
 
                     }
                 }
-
-
-
+                double profit = priceFirst - priceSecond;
+                Date date = new Date();
+                Trade trade = new Trade("HitBtc", "Exmo", priceFirst,
+                        priceSecond, date, profit);
+                tradeRepo.save(trade);
             }
         }
     }
