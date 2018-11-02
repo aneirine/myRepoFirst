@@ -16,7 +16,7 @@ public class ExmoObject {
         return book;
     }
 
-    @JsonSetter("ETH_BTC")
+    @JsonSetter("KICK_BTC")
     public void setBook(Book book) {
         this.book = book;
     }

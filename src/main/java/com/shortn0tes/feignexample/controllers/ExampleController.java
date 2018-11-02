@@ -2,8 +2,10 @@ package com.shortn0tes.feignexample.controllers;
 
 import com.shortn0tes.feignexample.feign.BitfenixObjectClient;
 import com.shortn0tes.feignexample.feign.ExmoObjectClient;
+import com.shortn0tes.feignexample.feign.HitBtcTradeClient;
 import com.shortn0tes.feignexample.feign.HitbtcObjectClient;
 import com.shortn0tes.feignexample.model.Price;
+import com.shortn0tes.feignexample.model.Profit;
 import com.shortn0tes.feignexample.model.bitfenix.AsksBF;
 import com.shortn0tes.feignexample.model.bitfenix.BidsBF;
 import com.shortn0tes.feignexample.model.bitfenix.BitfenixObject;
@@ -12,15 +14,21 @@ import com.shortn0tes.feignexample.model.hitbtc.AskH;
 import com.shortn0tes.feignexample.model.hitbtc.BidH;
 import com.shortn0tes.feignexample.model.hitbtc.HitbtcObject;
 import com.shortn0tes.feignexample.repos.PriceRepo;
+import com.shortn0tes.feignexample.repos.ProfitRepo;
+import com.shortn0tes.feignexample.trades.HitBtcTrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
 public class ExampleController {
+    Set<HitBtcTrade> hitBtcTradeSet;
+    Set<HitBtcTrade> newHitBtcTradeSet;
 
     @Autowired
     ExmoObjectClient exampleObjectClient;
@@ -34,37 +42,31 @@ public class ExampleController {
     @Autowired
     PriceRepo priceRepo;
 
+    @Autowired
+    ProfitRepo profitRepo;
+
+    @Autowired
+    HitBtcTradeClient hitBtcTradeClient;
+
 
     @Scheduled(fixedRate = 10000)
     void add() {
-        ExmoObject exmoObject = exampleObjectClient.getExmoObject("ETH_BTC");
-        double valueAskExmo = Double.parseDouble(exmoObject.getBook().getAsk_top());
-        double valueBidExmo = Double.parseDouble(exmoObject.getBook().getBid_top());
 
-        BitfenixObject bitfenixObject = bitfenixObjectClient.getBitfenixObject();
-        AsksBF[] bitfenixObjectAsks = bitfenixObject.getAsks();
-        BidsBF[] bitfenixObjectBids = bitfenixObject.getBids();
-        double valueAskBF = Double.parseDouble(bitfenixObjectAsks[0].getPrice());
-        double valueBidBF = Double.parseDouble(bitfenixObjectBids[0].getPrice());
+        if(hitBtcTradeSet == null){
+            hitBtcTradeSet = hitBtcTradeClient.getHitbtcObjects();
+        } else {
+            newHitBtcTradeSet = hitBtcTradeClient.getHitbtcObjects();
+            newHitBtcTradeSet.removeAll(hitBtcTradeSet);
+        }
 
-        HitbtcObject hitbtcObject = hitbtcObjectClient.getHitbtcObject();
-        AskH[] askHS = hitbtcObject.getAsk();
-        BidH[] bidHS = hitbtcObject.getBid();
-        double valueAskHit = Double.parseDouble(askHS[0].getPrice());
-        double valueBidHit = Double.parseDouble(bidHS[0].getPrice());
+        if(newHitBtcTradeSet != null){
+
+        }
 
 
-        Date date = new Date();
 
-        Price exmo = new Price("Exmo", valueAskExmo, valueBidExmo, date);
-        Price bitfenix = new Price("BitFenix", valueAskBF, valueBidBF, date);
-        Price hitbtc = new Price("HitBTC", valueAskHit, valueBidHit, date);
 
-        priceRepo.save(exmo);
-        priceRepo.save(bitfenix);
-        priceRepo.save(hitbtc);
 
-        System.out.println("saved");
 
     }
 }
