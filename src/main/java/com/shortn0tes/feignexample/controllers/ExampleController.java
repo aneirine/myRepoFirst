@@ -20,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import java.awt.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -52,22 +54,54 @@ public class ExampleController {
     @Scheduled(fixedRate = 10000)
     void add() {
 
-        if(hitBtcTradeSet == null){
+        if (hitBtcTradeSet == null) {
             hitBtcTradeSet = hitBtcTradeClient.getHitbtcObjects();
         } else {
             newHitBtcTradeSet = hitBtcTradeClient.getHitbtcObjects();
             newHitBtcTradeSet.removeAll(hitBtcTradeSet);
         }
 
-        if(newHitBtcTradeSet != null){
+        if (newHitBtcTradeSet != null) {
 
+            ExmoObject exmoObject = exampleObjectClient.getExmoObject("KICK_BTC");
+
+            for (HitBtcTrade temp : newHitBtcTradeSet) {
+
+                //we need this quantity
+                double quantity = Double.valueOf(temp.getQuantity());
+                System.out.println("we need " + quantity);
+                double priceFirst = Double.valueOf(temp.getPrice()) * quantity;
+
+                String[][] ask = exmoObject.getBook().getAsk();
+
+                double counted = 0, thisQuantity = 0, priceSecond;
+
+                for (int i = 0; i < ask.length; i++) {
+                    double quantityExmo = Double.valueOf(ask[i][1]);
+                    double price = Double.valueOf(ask[i][0]);
+
+                    if (quantityExmo >= quantity) {
+                        if (thisQuantity == 0) {
+                            priceSecond = price * quantity;
+                            System.out.println("priceSecond: " + priceSecond);
+                            break;
+                        } else {
+                            double result = quantity - thisQuantity;
+                            priceSecond = result * price + counted;
+                            System.out.println("priceSecond: " + priceSecond);
+                            break;
+                        }
+                    } else {
+                        counted += quantityExmo * price;
+                        thisQuantity += quantityExmo;
+
+                    }
+                }
+
+
+
+            }
         }
-
-
-
-
-
-
     }
 }
 

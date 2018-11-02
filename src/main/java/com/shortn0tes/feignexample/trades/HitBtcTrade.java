@@ -1,7 +1,5 @@
 package com.shortn0tes.feignexample.trades;
 
-
-
 public class HitBtcTrade {
 
     private String timestamp;
