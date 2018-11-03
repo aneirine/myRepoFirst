@@ -1,5 +1,7 @@
 package com.shortn0tes.feignexample.trades;
 
+import java.util.Objects;
+
 public class HitBtcTrade {
 
     private String timestamp;
@@ -57,5 +59,18 @@ public class HitBtcTrade {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HitBtcTrade that = (HitBtcTrade) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

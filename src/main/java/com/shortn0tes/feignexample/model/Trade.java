@@ -87,4 +87,17 @@ public class Trade {
     public void setProfit(double profit) {
         this.profit = profit;
     }
+
+    @Override
+    public String toString() {
+        return "Trade{" +
+                "id=" + id +
+                ", firstExchange='" + firstExchange + '\'' +
+                ", secondExchange='" + secondExchange + '\'' +
+                ", firstPrice=" + firstPrice +
+                ", secondPrice=" + secondPrice +
+                ", date=" + date +
+                ", profit=" + profit +
+                '}';
+    }
 }
