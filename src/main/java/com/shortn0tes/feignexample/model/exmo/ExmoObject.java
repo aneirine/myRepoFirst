@@ -1,5 +1,6 @@
 package com.shortn0tes.feignexample.model.exmo;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class ExmoObject {
@@ -16,7 +17,7 @@ public class ExmoObject {
         return book;
     }
 
-    @JsonSetter("ETH_BTC")
+    @JsonAnySetter
     public void setBook(Book book) {
         this.book = book;
     }

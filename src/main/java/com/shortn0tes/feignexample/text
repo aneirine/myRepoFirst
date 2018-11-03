@@ -1,0 +1,79 @@
+/*double valueAskExmo = Double.parseDouble(exmoObject.getBook().getAsk_top());
+        double valueBidExmo = Double.parseDouble(exmoObject.getBook().getBid_top());
+
+        BitfenixObject bitfenixObject = bitfenixObjectClient.getBitfenixObject();
+        AsksBF[] bitfenixObjectAsks = bitfenixObject.getAsks();
+        BidsBF[] bitfenixObjectBids = bitfenixObject.getBids();
+        double valueAskBF = Double.parseDouble(bitfenixObjectAsks[0].getPrice());
+        double valueBidBF = Double.parseDouble(bitfenixObjectBids[0].getPrice());
+
+        HitbtcObject hitbtcObject = hitbtcObjectClient.getHitbtcObject();
+        AskH[] askHS = hitbtcObject.getAsk();
+        BidH[] bidHS = hitbtcObject.getBid();
+        double valueAskHit = Double.parseDouble(askHS[0].getPrice());
+        double valueBidHit = Double.parseDouble(bidHS[0].getPrice());
+
+        Date date = new Date();
+
+        Price exmo = new Price("Exmo", valueAskExmo, valueBidExmo, date);
+        Price bitfenix = new Price("BitFenix", valueAskBF, valueBidBF, date);
+        Price hitbtc = new Price("HitBTC", valueAskHit, valueBidHit, date);
+
+        priceRepo.save(exmo);
+        priceRepo.save(bitfenix);
+        priceRepo.save(hitbtc);
+
+        System.out.println("saved");*/
+
+
+        /*BitfenixObject bitfenixObject = bitfenixObjectClient.getBitfenixObject();
+        HitbtcObject hitbtcObject = hitbtcObjectClient.getHitbtcObject();
+
+        AsksBF[] askBF = bitfenixObject.getAsks();
+        BidH[] bidHS = hitbtcObject.getBid();
+
+        double valueSellFirst = Double.parseDouble(bidHS[0].getPrice());
+        double valueBuyFirst = Double.parseDouble(askBF[0].getPrice());
+        double profitFirst = valueSellFirst - valueBuyFirst;
+
+        Date date = new Date();
+        Profit profit1 = new Profit("HitBTC", "BitFenix", valueSellFirst, valueBuyFirst, profitFirst, date );
+
+        AskH[] asksH = hitbtcObject.getAsk();
+        BidsBF[] bidsBF = bitfenixObject.getBids();
+
+        double valueSellSecond = Double.parseDouble(bidsBF[0].getPrice());
+        double valueBuySecond = Double.parseDouble(asksH[0].getPrice());
+        double profitSecond = valueSellSecond - valueBuySecond;
+
+        Profit profit2 = new Profit("BitFenix", "HitBTC", valueSellSecond, valueBuySecond, profitSecond, date);
+
+        profitRepo.save(profit1);
+        profitRepo.save(profit2);*/
+
+            //BidsBF[] bitfenixObjectBids = bitfenixObject.getBids();
+
+
+
+        /*double valueBuyFirst = Double.parseDouble(bitfenixObjectAsks[0].getPrice());
+        double valueSellSecond = Double.parseDouble(bitfenixObjectBids[0].getPrice());
+
+
+        AskH[] askHS = hitbtcObject.getAsk();
+        BidH[] bidHS = hitbtcObject.getBid();
+        double valueBuySecond = Double.parseDouble(askHS[0].getPrice());
+        double valueSellFirst = Double.parseDouble(bidHS[0].getPrice());*/
+
+       /* Date date = new Date();
+
+        double profitvalue1 =valueSellFirst - valueBuyFirst;
+        Profit profit1 = new Profit("HitBTC", "BitFenix", valueSellFirst, valueBuyFirst, profitvalue1, date);
+
+        double profitvalue2 = valueSellSecond - valueBuySecond;
+        Profit profit2 = new Profit("BitFenix", "HitBTC", valueSellSecond, valueBuySecond, profitvalue2, date);
+
+        profitRepo.save(profit1);
+        profitRepo.save(profit2);
+*/
+
+           // System.out.println("saved");
