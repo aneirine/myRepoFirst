@@ -22,8 +22,10 @@ import java.util.Set;
 @Service
 public class TradesService {
 
-    Set<HitBtcTrade> previousTrades;
-    Set<HitBtcTrade> trades;
+    private Set<HitBtcTrade> previousTrades;
+    private Set<HitBtcTrade> trades;
+    private String pair1 = "XRPBTC", pair2 = "XRP_BTC";
+
 
     @Autowired
     ExmoObjectClient exampleObjectClient;
@@ -39,9 +41,9 @@ public class TradesService {
     void add() {
 
         if (previousTrades == null) {
-            previousTrades = hitBtcTradeClient.getHitbtcObjects("XRPBTC");
+            previousTrades = hitBtcTradeClient.getHitbtcObjects(pair1);
         } else {
-            trades = hitBtcTradeClient.getHitbtcObjects("XRPBTC");
+            trades = hitBtcTradeClient.getHitbtcObjects(pair1);
             Set<HitBtcTrade> copy = new HashSet<>(trades);
             trades.removeAll(previousTrades);
             previousTrades = copy;
@@ -50,7 +52,7 @@ public class TradesService {
 
         if (trades != null && !trades.isEmpty()) {
 
-            Map<String, Book> exmoObject = exampleObjectClient.getExmoObject("XRP_BTC");
+            Map<String, Book> exmoObject = exampleObjectClient.getExmoObject(pair2);
 
             for (HitBtcTrade trade : trades) {
 
@@ -58,9 +60,16 @@ public class TradesService {
                 double quantity = Double.valueOf(trade.getQuantity());
                 double tradePrice = Double.valueOf(trade.getPrice()) * quantity;
 
-                String[][] ask = exmoObject.get("XRP_BTC").getAsk();
+                String[][] offeredPrice;
 
-                double priceSecond = getPriceSecond(quantity, ask);
+                String side = trade.getSide();
+                if(side.equals("sell")) {
+                    offeredPrice = exmoObject.get(pair2).getAsk();
+                } else {
+                    offeredPrice = exmoObject.get(pair2).getBid();
+                }
+
+                double priceSecond = getPriceSecond(quantity, offeredPrice);
                 double profit = profit(tradePrice, priceSecond);
 
                 Date date = new Date();
