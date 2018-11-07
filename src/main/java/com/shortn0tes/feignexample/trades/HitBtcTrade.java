@@ -2,7 +2,7 @@ package com.shortn0tes.feignexample.trades;
 
 import java.util.Objects;
 
-public class HitBtcTrade {
+public class HitBtcTrade extends MyTrade{
 
     private String timestamp;
     private String id;
