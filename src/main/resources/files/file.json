@@ -1,6 +1,6 @@
 {
-  "pairFirst": "KICKBTC",
-  "pairSecond": "KICK_BTC",
+  "pairFirst": "XRPBTC",
+  "pairSecond": "XRP_BTC",
   "tradeExchange": "HitBtc",
   "orderExchange" : "Exmo"
 }

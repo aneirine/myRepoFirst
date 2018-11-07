@@ -11,21 +11,4 @@ public class BitfenixObject {
     public BitfenixObject() {
     }
 
-
-    public AsksBF[] getAsks() {
-        return asks;
-    }
-
-
-    public void setAsks(AsksBF[] asks) {
-        this.asks = asks;
-    }
-
-    public BidsBF[] getBids() {
-        return bids;
-    }
-
-    public void setBids(BidsBF[] bids) {
-        this.bids = bids;
-    }
 }

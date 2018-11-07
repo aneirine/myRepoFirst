@@ -36,7 +36,6 @@ public class TradesService {
     private String[][] offeredPrice;
     private String side;
 
-
     @Autowired
     ExmoObjectClient exampleObjectClient;
 
@@ -53,11 +52,11 @@ public class TradesService {
     TradeRepo tradeRepo;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
     @Scheduled(fixedRate = 5000)
     void trade() throws IOException, ParseException {
         Object object = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/file.json"));
         JSONObject jsonObject = (JSONObject) object;
+
         pair1 = (String) jsonObject.get("pairFirst");
         pair2 = (String) jsonObject.get("pairSecond");
         String tradeExchange = (String) jsonObject.get("tradeExchange");
@@ -65,22 +64,10 @@ public class TradesService {
 
         add(tradeExchange, orderExchange);
 
-
     }
 
 
     private void add(String tradeExchange, String orderExchange) {
-
-     /*   if (tradeExchange.equals("HitBtc")) {
-            trades = hitBtcTradeClient.getHitbtcObjects(pair1);
-        } else if (tradeExchange.equals("Exmo")) {
-            Map<String, List<ExmoTrade>> map = exmoTradeClient.getListExmoTrade(pair2);
-            List<ExmoTrade> list = map.get(pair2);
-            trades = new HashSet<>(list);
-        }
-*/
-
-
         if (previousTrades == null) {
             if (tradeExchange.equals("HitBtc")) {
                 previousTrades = hitBtcTradeClient.getHitbtcObjects(pair1);
@@ -107,7 +94,6 @@ public class TradesService {
 
         if (trades != null && !trades.isEmpty()) {
 
-
             if (orderExchange.equals("Exmo")) {
                 Map<String, Book> exmoObject = exampleObjectClient.getExmoObject(pair2);
 
@@ -116,16 +102,13 @@ public class TradesService {
                     HitBtcTrade hitBtcTrade = (HitBtcTrade) trade;
                     quantity = Double.valueOf(hitBtcTrade.getQuantity());
                     tradePrice = Double.valueOf(hitBtcTrade.getPrice()) * quantity;
-
                     side = hitBtcTrade.getSide();
-                    System.out.println("side: " + side);
-
+                    
                     if (side.equals("sell")) {
                         offeredPrice = exmoObject.get(pair2).getAsk();
                     } else {
                         offeredPrice = exmoObject.get(pair2).getBid();
                     }
-
 
                 }
             } else if (orderExchange.equals("HitBtc")) {
@@ -140,6 +123,7 @@ public class TradesService {
                     if (side.equals("sell")) {
                         AskH[] askHS = hitbtcObject.getAsk();
                         offeredPrice = new String[askHS.length][2];
+
                         for (int i = 0; i < askHS.length; i++) {
                             offeredPrice[i][0] = askHS[i].getPrice();
                             offeredPrice[i][1] = askHS[i].getSize();
@@ -147,25 +131,25 @@ public class TradesService {
                     } else {
                         BidH[] bidHS = hitbtcObject.getBid();
                         offeredPrice = new String[bidHS.length][2];
+
                         for (int i = 0; i < bidHS.length; i++) {
                             offeredPrice[i][0] = bidHS[i].getPrice();
                             offeredPrice[i][1] = bidHS[i].getSize();
                         }
                     }
-
                 }
             }
-                double priceSecond = getPriceSecond(quantity, offeredPrice);
-                double profit = profit(tradePrice, priceSecond);
 
-                Date date = new Date();
-                Trade tradeObject = new Trade(tradeExchange, orderExchange, tradePrice,
-                        priceSecond, date, profit, side, pair2);
-                logger.info("trades = " + tradeObject.toString());
-                tradeRepo.save(tradeObject);
+            double priceSecond = getPriceSecond(quantity, offeredPrice);
+            double profit = profit(tradePrice, priceSecond);
+
+            Date date = new Date();
+            Trade tradeObject = new Trade(tradeExchange, orderExchange, tradePrice,
+                    priceSecond, date, profit, side, pair2);
+            logger.info("trades = " + tradeObject.toString());
+            tradeRepo.save(tradeObject);
         }
     }
-
 
     private double getPriceSecond(double quantity, String[][] ask) {
         double countedPrice = 0, countedQuantity = 0, priceSecond = 0;
@@ -186,7 +170,6 @@ public class TradesService {
             } else {
                 countedPrice += quantityExmo * price;
                 countedQuantity += quantityExmo;
-
             }
         }
         return priceSecond;
