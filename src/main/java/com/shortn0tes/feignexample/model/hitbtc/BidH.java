@@ -7,4 +7,5 @@ public class BidH {
 
     private String price;
     private String size;
+
 }

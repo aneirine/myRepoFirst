@@ -12,21 +12,25 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstExchange;
-    private String secondExchange;
+    private String tradeExchange;
+    private String orderExchange;
     private double firstPrice;
     private double secondPrice;
     private Date date;
     private double profit;
+    private String side;
+    private String pair;
 
-    public Trade(String firstExchange, String secondExchange, double firstPrice,
-                 double secondPrice, Date date, double profit) {
-        this.firstExchange = firstExchange;
-        this.secondExchange = secondExchange;
+    public Trade(String tradeExchange, String orderExchange, double firstPrice,
+                 double secondPrice, Date date, double profit, String side, String pair) {
+        this.tradeExchange = tradeExchange;
+        this.orderExchange = orderExchange;
         this.firstPrice = firstPrice;
         this.secondPrice = secondPrice;
         this.date = date;
         this.profit = profit;
+        this.side = side;
+        this.pair = pair;
     }
 
     public Trade() {
@@ -41,19 +45,19 @@ public class Trade {
     }
 
     public String getFirstExchange() {
-        return firstExchange;
+        return tradeExchange;
     }
 
-    public void setFirstExchange(String firstExchange) {
-        this.firstExchange = firstExchange;
+    public void setFirstExchange(String tradeExchange) {
+        this.tradeExchange = tradeExchange;
     }
 
     public String getSecondExchange() {
-        return secondExchange;
+        return orderExchange;
     }
 
-    public void setSecondExchange(String secondExchange) {
-        this.secondExchange = secondExchange;
+    public void setSecondExchange(String orderExchange) {
+        this.orderExchange = orderExchange;
     }
 
     public double getFirstPrice() {
@@ -88,16 +92,49 @@ public class Trade {
         this.profit = profit;
     }
 
+    public String getSide() {
+        return side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
+    }
+
+    public String getTradeExchange() {
+        return tradeExchange;
+    }
+
+    public void setTradeExchange(String tradeExchange) {
+        this.tradeExchange = tradeExchange;
+    }
+
+    public String getOrderExchange() {
+        return orderExchange;
+    }
+
+    public void setOrderExchange(String orderExchange) {
+        this.orderExchange = orderExchange;
+    }
+
+    public String getPair() {
+        return pair;
+    }
+
+    public void setPair(String pair) {
+        this.pair = pair;
+    }
+
     @Override
     public String toString() {
         return "Trade{" +
                 "id=" + id +
-                ", firstExchange='" + firstExchange + '\'' +
-                ", secondExchange='" + secondExchange + '\'' +
+                ", tradeExchange='" + tradeExchange + '\'' +
+                ", orderExchange='" + orderExchange + '\'' +
                 ", firstPrice=" + firstPrice +
                 ", secondPrice=" + secondPrice +
                 ", date=" + date +
                 ", profit=" + profit +
+                ", side='" + side + '\'' +
                 '}';
     }
 }
