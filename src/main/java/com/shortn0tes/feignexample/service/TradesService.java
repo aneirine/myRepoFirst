@@ -48,6 +48,7 @@ public class TradesService {
     @Autowired
     ExmoTradeClient exmoTradeClient;
 
+
     @Autowired
     TradeRepo tradeRepo;
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -63,6 +64,16 @@ public class TradesService {
         String orderExchange = (String) jsonObject.get("orderExchange");
 
         add(tradeExchange, orderExchange);
+
+        //comparison
+        Object objectOne = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json"));
+        Object objectTwo = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/userTwo.json"));
+
+        Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
+        Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
+        
+        compareTwoJSONObjects(objectOne, objectTwo);
+        compareTwoJSONObjects(objectThree, objectFour);
 
     }
 
@@ -103,7 +114,7 @@ public class TradesService {
                     quantity = Double.valueOf(hitBtcTrade.getQuantity());
                     tradePrice = Double.valueOf(hitBtcTrade.getPrice()) * quantity;
                     side = hitBtcTrade.getSide();
-                    
+
                     if (side.equals("sell")) {
                         offeredPrice = exmoObject.get(pair2).getAsk();
                     } else {
@@ -177,6 +188,25 @@ public class TradesService {
 
     private double profit(double first, double second) {
         return first - second;
+    }
+
+    //This method compares two JSONObjects
+    private void compareTwoJSONObjects(Object objectOne, Object objectTwo) {
+        JSONObject firstJSO = (JSONObject) objectOne;
+        JSONObject secondJSO = (JSONObject) objectTwo;
+
+        Set<String> set = firstJSO.keySet();
+        ArrayList<String> array = new ArrayList<>();
+        array.addAll(set);
+
+        for (int i = 0; i < array.size(); i++){
+            String str = array.get(i);
+            String first = (String) firstJSO.get(str);
+            String second = (String) secondJSO.get(str);
+            System.out.println("Key: " + str + " F " + first + " S " + second + " " + first.equals(second));
+        }
+        System.out.println();
+
     }
 }
 
