@@ -75,8 +75,8 @@ public class TradesService {
         String path2 = "E:/java/myPr/feign-example-master/src/main/resources/files/userTwo.json";
 
 
-       // Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
-       // Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
+        // Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
+        // Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
 
         compareTwoJSONObjects(path1, path2);
     }
@@ -204,8 +204,25 @@ public class TradesService {
         Map<String, String> secondMap = objectMapper.readValue(mapData, HashMap.class);
 
         for (String key : firstMap.keySet()) {
-            System.out.println("Key = " + key + " " + firstMap.get(key).equals(secondMap.get(key)));
-        }
+            try {
+                System.out.println("Key = " + key + " " + firstMap.get(key).equals(secondMap.get(key)));
+            } catch (Exception e) {
+                Object object = firstMap.get(key);
+                Map<String, Object> mapObFirst = objectMapper.convertValue(object, Map.class);
+
+                object = secondMap.get(key);
+                Map<String, Object> mapObSecond = objectMapper.convertValue(object, Map.class);
+                boolean check = true;
+                
+                for (String obKey : mapObFirst.keySet()) {
+                    if (!mapObFirst.get(obKey).equals(mapObSecond.get(obKey))) check = false;
+                    System.out.println("F = " + mapObFirst.get(obKey) + " S = " + mapObSecond.get(obKey));
+                }
+                if (check) System.out.println("The objects are equal!");}
+}
+
+
+
 
     }
 
