@@ -4,9 +4,16 @@
   "email": "annabrown@gmail.com",
   "age": "22",
   "city": "Dnepr",
+  
   "animal": {
     "type": "Dog",
     "name": "Kollin"
   },
+
+  "house": {
+    "color": "white",
+    "size": "5",
+    "price": "10000"
+  }
 
 }

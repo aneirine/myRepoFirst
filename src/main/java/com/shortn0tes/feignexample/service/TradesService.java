@@ -213,7 +213,7 @@ public class TradesService {
                 object = secondMap.get(key);
                 Map<String, Object> mapObSecond = objectMapper.convertValue(object, Map.class);
                 boolean check = true;
-                
+
                 for (String obKey : mapObFirst.keySet()) {
                     if (!mapObFirst.get(obKey).equals(mapObSecond.get(obKey))) check = false;
                     System.out.println("F = " + mapObFirst.get(obKey) + " S = " + mapObSecond.get(obKey));
