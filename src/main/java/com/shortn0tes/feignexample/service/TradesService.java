@@ -1,5 +1,6 @@
 package com.shortn0tes.feignexample.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shortn0tes.feignexample.feign.ExmoObjectClient;
 import com.shortn0tes.feignexample.feign.ExmoTradeClient;
 import com.shortn0tes.feignexample.feign.HitBtcTradeClient;
@@ -21,8 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -55,6 +59,7 @@ public class TradesService {
 
     @Scheduled(fixedRate = 5000)
     void trade() throws IOException, ParseException {
+        /*
         Object object = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/file.json"));
         JSONObject jsonObject = (JSONObject) object;
 
@@ -64,17 +69,16 @@ public class TradesService {
         String orderExchange = (String) jsonObject.get("orderExchange");
 
         add(tradeExchange, orderExchange);
-
+*/
         //comparison
-        Object objectOne = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json"));
-        Object objectTwo = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/userTwo.json"));
+        String path1 = "E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json";
+        String path2 = "E:/java/myPr/feign-example-master/src/main/resources/files/userTwo.json";
 
-        Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
-        Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
-        
-        compareTwoJSONObjects(objectOne, objectTwo);
-        compareTwoJSONObjects(objectThree, objectFour);
 
+       // Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
+       // Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
+
+        compareTwoJSONObjects(path1, path2);
     }
 
 
@@ -191,23 +195,20 @@ public class TradesService {
     }
 
     //This method compares two JSONObjects
-    private void compareTwoJSONObjects(Object objectOne, Object objectTwo) {
-        JSONObject firstJSO = (JSONObject) objectOne;
-        JSONObject secondJSO = (JSONObject) objectTwo;
+    private void compareTwoJSONObjects(String path1, String path2) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        byte[] mapData = Files.readAllBytes(Paths.get(path1));
+        Map<String, String> firstMap = objectMapper.readValue(mapData, HashMap.class);
 
-        Set<String> set = firstJSO.keySet();
-        ArrayList<String> array = new ArrayList<>();
-        array.addAll(set);
+        mapData = Files.readAllBytes(Paths.get(path2));
+        Map<String, String> secondMap = objectMapper.readValue(mapData, HashMap.class);
 
-        for (int i = 0; i < array.size(); i++){
-            String str = array.get(i);
-            String first = (String) firstJSO.get(str);
-            String second = (String) secondJSO.get(str);
-            System.out.println("Key: " + str + " F " + first + " S " + second + " " + first.equals(second));
+        for (String key : firstMap.keySet()) {
+            System.out.println("Key = " + key + " " + firstMap.get(key).equals(secondMap.get(key)));
         }
-        System.out.println();
 
     }
+
 }
 
 
