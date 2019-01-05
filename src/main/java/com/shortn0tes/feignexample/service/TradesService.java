@@ -218,7 +218,7 @@ public class TradesService {
                     if (!mapObFirst.get(obKey).equals(mapObSecond.get(obKey))) check = false;
                     System.out.println("F = " + mapObFirst.get(obKey) + " S = " + mapObSecond.get(obKey));
                 }
-                if (check) System.out.println("The objects are equal!");}
+                if (check) System.out.println("The objects " + key + " are equal!");}
 }
 
 
