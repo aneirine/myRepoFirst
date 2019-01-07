@@ -1,5 +1,7 @@
 package com.shortn0tes.feignexample.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shortn0tes.feignexample.feign.ExmoObjectClient;
 import com.shortn0tes.feignexample.feign.ExmoTradeClient;
@@ -40,6 +42,8 @@ public class TradesService {
     private String[][] offeredPrice;
     private String side;
 
+    private Map<Object, Object> localMap;
+
     @Autowired
     ExmoObjectClient exampleObjectClient;
 
@@ -69,20 +73,37 @@ public class TradesService {
         String orderExchange = (String) jsonObject.get("orderExchange");
 
         add(tradeExchange, orderExchange);
-*/
-        //comparison
-        String path1 = "E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json";
-        String path2 = "E:/java/myPr/feign-example-master/src/main/resources/files/userTwo.json";
+        */
+
+        String path = "E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json";
+        byte[] mapData = Files.readAllBytes(Paths.get(path));
+
+        if (localMap != null) {
+            Map<Object, Object> newMap = convertJsonToValueMap(mapData);
+            compareObjects(localMap, newMap);
+            localMap = newMap;
+        } else {
+            localMap = convertJsonToValueMap(mapData);
+        }
 
 
-        // Object objectThree = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personOne.json"));
-        // Object objectFour = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/personTwo.json"));
-
-        compareTwoJSONObjects(path1, path2);
     }
 
+    private void compareObjects(Map<Object, Object> oldMap, Map<Object, Object> newMap) {
+        boolean check = true;
+        for (Object key : oldMap.keySet()) {
+            if (!oldMap.get(key).equals(newMap.get(key))) {
+                check = false;
+            }
+        }
+        if (check) {
+            logger.info("JSON files are equal");
+        } else {
+            logger.info("JSON files are not equal");
+        }
+    }
 
-    private void add(String tradeExchange, String orderExchange) {
+  /*  private void add(String tradeExchange, String orderExchange) {
         if (previousTrades == null) {
             if (tradeExchange.equals("HitBtc")) {
                 previousTrades = hitBtcTradeClient.getHitbtcObjects(pair1);
@@ -193,40 +214,32 @@ public class TradesService {
     private double profit(double first, double second) {
         return first - second;
     }
+*/
+    private static Map<Object, Object> convertJsonToValueMap(byte[] oldEntityJson) throws java.io.IOException {
+        ObjectMapper jackson = new ObjectMapper();
 
-    //This method compares two JSONObjects
-    private void compareTwoJSONObjects(String path1, String path2) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        byte[] mapData = Files.readAllBytes(Paths.get(path1));
-        Map<String, String> firstMap = objectMapper.readValue(mapData, HashMap.class);
-
-        mapData = Files.readAllBytes(Paths.get(path2));
-        Map<String, String> secondMap = objectMapper.readValue(mapData, HashMap.class);
-
-        for (String key : firstMap.keySet()) {
-            try {
-                System.out.println("Key = " + key + " " + firstMap.get(key).equals(secondMap.get(key)));
-            } catch (Exception e) {
-                Object object = firstMap.get(key);
-                Map<String, Object> mapObFirst = objectMapper.convertValue(object, Map.class);
-
-                object = secondMap.get(key);
-                Map<String, Object> mapObSecond = objectMapper.convertValue(object, Map.class);
-                boolean check = true;
-
-                for (String obKey : mapObFirst.keySet()) {
-                    if (!mapObFirst.get(obKey).equals(mapObSecond.get(obKey))) check = false;
-                    System.out.println("F = " + mapObFirst.get(obKey) + " S = " + mapObSecond.get(obKey));
+        Map<Object, Object> map = jackson.readValue(oldEntityJson, HashMap.class);
+        Map<Object, Object> copy = new HashMap<>(map);
+        Map<Object, Object> resultMap = new HashMap<>();
+        while (!copy.isEmpty()) {
+            Map<Object, Object> innerMaps = new HashMap<>();
+            for (Map.Entry<Object, Object> o : copy.entrySet()) {
+                if (o.getValue() instanceof Map) {
+                    for (Object mapEntry : ((Map) o.getValue()).entrySet()) {
+                        innerMaps.put(o.getKey().toString() + "." + ((Map.Entry<String, Object>) mapEntry).getKey(), ((Map.Entry<String, Object>) mapEntry).getValue());
+                    }
+                } else {
+                    resultMap.put(o.getKey(), o.getValue());
                 }
-                if (check) System.out.println("The objects " + key + " are equal!");}
-}
-
-
-
-
+            }
+            copy = innerMaps;
+        }
+        return resultMap;
     }
 
 }
+
+
 
 
 
