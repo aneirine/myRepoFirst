@@ -1,0 +1,24 @@
+{
+  "username": "Anna",
+  "phone number": "112354",
+  "email": "annabrown@gmail.com",
+  "age": "22",
+  "city": "Dnepr",
+
+  "animal": {
+    "type": "Dog",
+    "name": "Kollin",
+    "color": "Brown"
+  },
+
+  "house": {
+    "color": "white",
+    "size": "5",
+    "price": "10000",
+    "kitchen": {
+      "price": "5000",
+      "color": "black K"
+    }
+  }
+
+}

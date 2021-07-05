@@ -1,5 +1,8 @@
 package com.shortn0tes.feignexample.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shortn0tes.feignexample.feign.ExmoObjectClient;
 import com.shortn0tes.feignexample.feign.ExmoTradeClient;
 import com.shortn0tes.feignexample.feign.HitBtcTradeClient;
@@ -21,8 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -36,6 +42,8 @@ public class TradesService {
     private String[][] offeredPrice;
     private String side;
 
+    private Map<Object, Object> localMap;
+
     @Autowired
     ExmoObjectClient exampleObjectClient;
 
@@ -48,12 +56,14 @@ public class TradesService {
     @Autowired
     ExmoTradeClient exmoTradeClient;
 
+
     @Autowired
     TradeRepo tradeRepo;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Scheduled(fixedRate = 5000)
     void trade() throws IOException, ParseException {
+        /*
         Object object = new JSONParser().parse(new FileReader("E:/java/myPr/feign-example-master/src/main/resources/files/file.json"));
         JSONObject jsonObject = (JSONObject) object;
 
@@ -63,11 +73,37 @@ public class TradesService {
         String orderExchange = (String) jsonObject.get("orderExchange");
 
         add(tradeExchange, orderExchange);
+        */
+
+        String path = "E:/java/myPr/feign-example-master/src/main/resources/files/userOne.json";
+        byte[] mapData = Files.readAllBytes(Paths.get(path));
+
+        if (localMap != null) {
+            Map<Object, Object> newMap = convertJsonToValueMap(mapData);
+            compareObjects(localMap, newMap);
+            localMap = newMap;
+        } else {
+            localMap = convertJsonToValueMap(mapData);
+        }
+
 
     }
 
+    private void compareObjects(Map<Object, Object> oldMap, Map<Object, Object> newMap) {
+        boolean check = true;
+        for (Object key : oldMap.keySet()) {
+            if (!oldMap.get(key).equals(newMap.get(key))) {
+                check = false;
+            }
+        }
+        if (check) {
+            logger.info("JSON files are equal");
+        } else {
+            logger.info("JSON files are not equal");
+        }
+    }
 
-    private void add(String tradeExchange, String orderExchange) {
+  /*  private void add(String tradeExchange, String orderExchange) {
         if (previousTrades == null) {
             if (tradeExchange.equals("HitBtc")) {
                 previousTrades = hitBtcTradeClient.getHitbtcObjects(pair1);
@@ -103,7 +139,7 @@ public class TradesService {
                     quantity = Double.valueOf(hitBtcTrade.getQuantity());
                     tradePrice = Double.valueOf(hitBtcTrade.getPrice()) * quantity;
                     side = hitBtcTrade.getSide();
-                    
+
                     if (side.equals("sell")) {
                         offeredPrice = exmoObject.get(pair2).getAsk();
                     } else {
@@ -178,7 +214,32 @@ public class TradesService {
     private double profit(double first, double second) {
         return first - second;
     }
+*/
+    private static Map<Object, Object> convertJsonToValueMap(byte[] oldEntityJson) throws java.io.IOException {
+        ObjectMapper jackson = new ObjectMapper();
+
+        Map<Object, Object> map = jackson.readValue(oldEntityJson, HashMap.class);
+        Map<Object, Object> copy = new HashMap<>(map);
+        Map<Object, Object> resultMap = new HashMap<>();
+        while (!copy.isEmpty()) {
+            Map<Object, Object> innerMaps = new HashMap<>();
+            for (Map.Entry<Object, Object> o : copy.entrySet()) {
+                if (o.getValue() instanceof Map) {
+                    for (Object mapEntry : ((Map) o.getValue()).entrySet()) {
+                        innerMaps.put(o.getKey().toString() + "." + ((Map.Entry<String, Object>) mapEntry).getKey(), ((Map.Entry<String, Object>) mapEntry).getValue());
+                    }
+                } else {
+                    resultMap.put(o.getKey(), o.getValue());
+                }
+            }
+            copy = innerMaps;
+        }
+        return resultMap;
+    }
+
 }
+
+
 
 
 
